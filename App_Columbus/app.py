@@ -12,13 +12,20 @@ with open(model_path, 'rb') as f:
 # Streamlit UI
 st.title("Cylinder Cost Prediction-Columbus")
 
-# Initialize session state variables if not already set
-defaults = {
-    "bore": 0.5,
-    "stroke": 100.0,
-    "rpc": 100.0,
-    "rod": 2.0
-}
+# Extract values from session_state
+bore = st.session_state["bore"]
+stroke = st.session_state["stroke"]
+rpc = st.session_state["rpc"]
+rod = st.session_state["rod"]
+
+# Convert to DataFrame for model
+defaults = pd.DataFrame([{
+    'Bore': bore,
+    'Stroke': stroke,
+    'RPC': rpc,
+    'Rod': rod,
+}])
+
 
 for key, default in defaults.items():
     if key not in st.session_state:
