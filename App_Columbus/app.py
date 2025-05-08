@@ -40,6 +40,21 @@ def update_rpc_slider(): st.session_state["rpc"] = st.session_state["rpc_input"]
 def update_rod_input(): st.session_state["rod_input"] = st.session_state["rod"]
 def update_rod_slider(): st.session_state["rod"] = st.session_state["rod_input"]
 
+# Convert to DataFrame for model
+data = pd.DataFrame([{
+    'Bore': bore,
+    'Stroke': stroke,
+    'RPC': rpc,
+    'Rod': rod,
+    'Bore2': bore ** 2,
+    'Bore_RPC': bore * rpc,
+    'Bore_Stroke': rpc * stroke,
+    'Bore_Rod': bore * rod,
+    'R bearing_Y': 1 if rbearing == 'Yes' else 0,
+    'B bearing_Y': 1 if bbearing == 'Yes' else 0,
+    'Block_Y': 1 if block == 'Yes' else 0,
+    'Val A_Y': 1 if vala == 'Yes' else 0
+}])
 # Bore
 col1, col2 = st.columns([3, 1])
 with col1:
@@ -73,22 +88,6 @@ rbearing = st.selectbox("R bearing", ["No", "Yes"])
 bbearing = st.selectbox("B bearing", ["No", "Yes"])
 block = st.selectbox("Block", ["No", "Yes"])
 vala = st.selectbox("Val A", ["No", "Yes"])
-
-# Convert to DataFrame for model
-data = pd.DataFrame([{
-    'Bore': bore,
-    'Stroke': stroke,
-    'RPC': rpc,
-    'Rod': rod,
-    'Bore2': bore ** 2,
-    'Bore_RPC': bore * rpc,
-    'Bore_Stroke': rpc * stroke,
-    'Bore_Rod': bore * rod,
-    'R bearing_Y': 1 if rbearing == 'Yes' else 0,
-    'B bearing_Y': 1 if bbearing == 'Yes' else 0,
-    'Block_Y': 1 if block == 'Yes' else 0,
-    'Val A_Y': 1 if vala == 'Yes' else 0
-}])
 
 # Predict
 pred_log = model.predict(data)[0]
