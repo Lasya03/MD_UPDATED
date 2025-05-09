@@ -3,15 +3,17 @@ import streamlit as st
 # App title
 st.title("Cylinder Cost Prediction")
 
-# Sidebar dropdown
+# Sidebar
 model_names = [str(i) for i in range(1, 12)]
-selected_model = st.sidebar.selectbox("Select cylinder Type", model_names)
+selected_model = st.sidebar.selectbox("Select Dataset/Model", model_names)
 
-# Layout: Two columns
+# Layout
 col1, col2 = st.columns(2)
 
-# ---------------- Left Column: A–D with synced slider & input ---------------- #
+# ---------------- Left Column: Sliders + Inputs ---------------- #
 with col1:
+    st.subheader("Numeric Features")
+
     feature_config = {
         "A": (0, 100),
         "B": (0, 200),
@@ -23,41 +25,52 @@ with col1:
         slider_key = f"{feature}_slider"
         input_key = f"{feature}_input"
 
-        # Initialize state if not set
+        # Initialize in session_state
         if slider_key not in st.session_state:
             st.session_state[slider_key] = (min_val + max_val) // 2
         if input_key not in st.session_state:
             st.session_state[input_key] = st.session_state[slider_key]
 
-        # Sync from input to slider
-        if st.session_state[input_key] != st.session_state[slider_key]:
-            st.session_state[slider_key] = st.session_state[input_key]
-
+        # Layout
         st.markdown(f"**{feature}**")
         slider_col, input_col = st.columns([3, 1])
 
-        # Draw widgets
-        slider_col.slider(
-            label=feature,
+        # Create slider
+        slider_val = slider_col.slider(
+            label=f"{feature} slider",
             min_value=min_val,
             max_value=max_val,
-            key=slider_key,
-            label_visibility="collapsed"
-        )
-        input_col.number_input(
-            label=feature,
-            min_value=min_val,
-            max_value=max_val,
-            key=input_key,
-            label_visibility="collapsed"
+            value=st.session_state[slider_key],
+            key=slider_key
         )
 
-        # Sync from slider to input (this happens after widgets are drawn)
+        # Create input box
+        input_val = input_col.number_input(
+            label=f"{feature} input",
+            min_value=min_val,
+            max_value=max_val,
+            value=st.session_state[input_key],
+            key=input_key
+        )
+
+        # Sync logic
         if st.session_state[slider_key] != st.session_state[input_key]:
-            st.session_state[input_key] = st.session_state[slider_key]
+            # Update whichever was not just changed
+            trigger = st.session_state.get(f"{feature}_trigger", "slider")
+            if trigger == "slider":
+                st.session_state[input_key] = st.session_state[slider_key]
+            else:
+                st.session_state[slider_key] = st.session_state[input_key]
 
-# ---------------- Right Column: Yes/No Dropdowns ---------------- #
+        # Track last changed widget
+        if slider_val != st.session_state[input_key]:
+            st.session_state[f"{feature}_trigger"] = "slider"
+        elif input_val != st.session_state[slider_key]:
+            st.session_state[f"{feature}_trigger"] = "input"
+
+# ---------------- Right Column: Yes/No Options ---------------- #
 with col2:
+    st.subheader("Yes/No Features")
 
     for feature in ["R", "B", "Bl", "VA", "VB"]:
         label_col, select_col = st.columns([1, 2])
