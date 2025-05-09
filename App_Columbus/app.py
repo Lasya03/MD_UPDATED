@@ -5,7 +5,7 @@ import pickle
 import os
 
 # App title
-st.title("Cylinder Cost Prediction-columbus")
+st.title("Cylinder Cost Prediction-Columbus")
 
 # Sidebar dropdown
 model_names = [
