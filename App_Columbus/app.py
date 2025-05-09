@@ -4,7 +4,7 @@ import streamlit as st
 st.title("Cylinder Cost Prediction")
 
 # Sidebar dropdown
-model_names = [str(i) for i in range(1, 12)]
+model_names = {"HD","HDE","HDI","LD","LDH","MD","NR","H","L","M","N"}
 selected_model = st.sidebar.selectbox("Select Dataset/Model", model_names)
 
 # Layout: Two columns
@@ -59,7 +59,7 @@ with col1:
 
 # ------------------- Right Column: Yes/No ------------------- #
 with col2:
-    for feature in ["R", "B", "Bl", "VA", "VB"]:
+    for feature in ["R bearing", "B bearing", "Block", "Valve A", "Valve B"]:
         label_col, select_col = st.columns([1, 2])
         with select_col:
             st.selectbox(f"{feature.upper()}", ["No", "Yes"], key=f"{feature}_select")
