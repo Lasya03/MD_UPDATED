@@ -12,13 +12,11 @@ col1, col2 = st.columns(2)
 
 # ------------------- Left Column: Slider + Input (A–D) ------------------- #
 with col1:
-    st.subheader("Numerical Features")
-
     feature_config = {
-        "A": (0, 100),
-        "B": (0, 200),
-        "C": (10, 500),
-        "D": (1, 50),
+        "Bore": (0, 100),
+        "Stroke": (0, 200),
+        "RPC": (10, 500),
+        "Rod": (1, 50),
     }
 
     for feature, (min_val, max_val) in feature_config.items():
@@ -61,8 +59,6 @@ with col1:
 
 # ------------------- Right Column: Yes/No ------------------- #
 with col2:
-    st.subheader("Yes/No Features")
-
     for feature in ["R", "B", "Bl", "VA", "VB"]:
         label_col, select_col = st.columns([1, 2])
         with select_col:
