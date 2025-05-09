@@ -16,7 +16,7 @@ col1, col2 = st.columns(2)
 
 # ------------------------ Left Column: A–D (Slider + Input) ------------------------ #
 with col1:
-    st.subheader("")
+    st.subheader("Hi")
     
     sliders = {}
     inputs = {}
