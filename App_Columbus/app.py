@@ -60,7 +60,7 @@ with col2:
 
     yes_no_features = {}
     for feature in ["e", "f", "g", "h"]:
-        yes_no_features[feature] = st.selectbox(f"{feature.upper()}", ["Yes", "No"])
+        yes_no_features[feature] = st.selectbox(f"{feature.upper()}", ["No", "Yes"])
 
 
 
