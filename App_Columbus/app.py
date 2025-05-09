@@ -12,7 +12,7 @@ model_names = [
     "HD", "HDE", "HDI", "LD", "LDH",
     "MD", "NR", "H", "L", "M", "N"
 ]
-st.subheader(f"Enter input features for {selected_model}")
+st.subheader(f"Enter input features for {model_names}")
 
 # Layout: Two columns
 col1, col2 = st.columns(2)
