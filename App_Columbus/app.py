@@ -12,6 +12,7 @@ model_names = [
     "HD", "HDE", "HDI", "LD", "LDH",
     "MD", "NR", "H", "L", "M", "N"
 ]
+selected_model = st.sidebar.selectbox("Select Dataset/Model", model_names)
 st.subheader(f"Enter input features for {model_names}")
 
 # Layout: Two columns
