@@ -25,7 +25,7 @@ with col1:
 
     # Feature ranges (you can customize ranges here)
     feature_config = {
-        "Bore": (0, 20),
+        "Bore": (0, 25),
         "Stroke": (0, 500),
         "RPC": (0, 500),
         "Rod": (0, 20),
