@@ -58,7 +58,7 @@ with col1:
 with col2:
 
     yes_no_features = {}
-    for feature in ["R", "B", "Bl", "V"]:
+    for feature in ["R bearing", "B bearing", "Block", "Val A"]:
         yes_no_features[feature] = st.selectbox(f"{feature.upper()}", ["No", "Yes"])
 
 
