@@ -12,7 +12,7 @@ model_names = [
     "HD", "HDE", "HDI", "LD", "LDH",
     "MD", "NR", "H", "L", "M", "N"
 ]
-selected_model = st.sidebar.selectbox("Select Dataset/Model", model_names)
+selected_model = st.sidebar.selectbox("Select Cylinder Type", model_names)
 
 # Layout: Two columns
 col1, col2 = st.columns(2)
