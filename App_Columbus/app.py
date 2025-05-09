@@ -7,10 +7,10 @@ st.title("Cylinder Cost Prediction")
 model_names = [str(i) for i in range(1, 12)]
 selected_model = st.sidebar.selectbox("Select Dataset/Model", model_names)
 
-# Layout: Two columns for main UI
+# Layout: Two columns
 col1, col2 = st.columns(2)
 
-# ------------------------ Left Column: A–D (Slider + Input) ------------------------ #
+# ------------------- Left Column: Slider + Input (A–D) ------------------- #
 with col1:
     st.subheader("Numerical Features")
 
@@ -22,49 +22,48 @@ with col1:
     }
 
     for feature, (min_val, max_val) in feature_config.items():
-        key_slider = f"{feature}_slider"
-        key_input = f"{feature}_input"
-
-        # Set default session state if not already set
-        if key_slider not in st.session_state:
-            st.session_state[key_slider] = (min_val + max_val) // 2
-        if key_input not in st.session_state:
-            st.session_state[key_input] = st.session_state[key_slider]
-
-        # Define callbacks
-        def make_slider_callback(feature):
-            def callback():
-                st.session_state[f"{feature}_input"] = st.session_state[f"{feature}_slider"]
-            return callback
-
-        def make_input_callback(feature):
-            def callback():
-                st.session_state[f"{feature}_slider"] = st.session_state[f"{feature}_input"]
-            return callback
-
         st.markdown(f"**{feature}**")
-        slider_col, input_col = st.columns([3, 1])  # Adjust width ratios here
+        slider_col, input_col = st.columns([3, 1])
 
-        # Create slider and number input
+        # Keys
+        slider_key = f"{feature}_slider"
+        input_key = f"{feature}_input"
+
+        # Initialize state
+        if slider_key not in st.session_state:
+            st.session_state[slider_key] = (min_val + max_val) // 2
+        if input_key not in st.session_state:
+            st.session_state[input_key] = st.session_state[slider_key]
+
+        # If input changed, override slider
+        if st.session_state[input_key] != st.session_state[slider_key]:
+            st.session_state[slider_key] = st.session_state[input_key]
+
+        # Draw widgets (they update session_state directly)
         slider_col.slider(
-            f"{feature} slider", min_val, max_val,
-            key=key_slider, label_visibility="collapsed",
-            on_change=make_slider_callback(feature)
+            label=feature,
+            min_value=min_val,
+            max_value=max_val,
+            key=slider_key,
+            label_visibility="collapsed"
         )
         input_col.number_input(
-            f"{feature} input", min_val, max_val,
-            key=key_input, label_visibility="collapsed",
-            on_change=make_input_callback(feature)
+            label=feature,
+            min_value=min_val,
+            max_value=max_val,
+            key=input_key,
+            label_visibility="collapsed"
         )
 
-# ------------------------ Right Column: R, B, Bl, VA, VB (Yes/No) ------------------------ #
+        # Re-sync input to match slider if slider changed
+        if st.session_state[slider_key] != st.session_state[input_key]:
+            st.session_state[input_key] = st.session_state[slider_key]
+
+# ------------------- Right Column: Yes/No ------------------- #
 with col2:
     st.subheader("Yes/No Features")
 
-    yes_no_features = {}
     for feature in ["R", "B", "Bl", "VA", "VB"]:
-        label_col, select_col = st.columns([1, 2])  # Adjust label vs dropdown size
+        label_col, select_col = st.columns([1, 2])
         with select_col:
-            yes_no_features[feature] = st.selectbox(
-                f"{feature.upper()}", ["No", "Yes"], key=f"{feature}_select"
-            )
+            st.selectbox(f"{feature.upper()}", ["No", "Yes"], key=f"{feature}_select")
