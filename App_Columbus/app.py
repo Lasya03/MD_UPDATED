@@ -17,7 +17,6 @@ selected_model = st.sidebar.selectbox("Select Dataset/Model", model_names)
 # Layout: Two columns
 col1, col2 = st.columns(2)
 
-# ------------------------ Left Column: a, b, c, d ------------------------ #
 with col1:
     # Define a dictionary to store values
     sliders = {}
@@ -25,10 +24,10 @@ with col1:
 
     # Feature ranges (you can customize ranges here)
     feature_config = {
-        "a": (0, 100),
-        "b": (0, 200),
-        "c": (10, 500),
-        "d": (1, 50),
+        "Bore": (0, 100),
+        "Stroke": (0, 200),
+        "RPC": (10, 500),
+        "Rod": (1, 50),
     }
 
     for feature, (min_val, max_val) in feature_config.items():
@@ -59,7 +58,7 @@ with col1:
 with col2:
 
     yes_no_features = {}
-    for feature in ["e", "f", "g", "h"]:
+    for feature in ["R bearing_Y", "B bearing_Y", "Block_Y", "Val A_Y"]:
         yes_no_features[feature] = st.selectbox(f"{feature.upper()}", ["No", "Yes"])
 
 
