@@ -8,21 +8,19 @@ import os
 st.title("Cylinder Cost Prediction")
 
 # Sidebar dropdown
-model_names = [
-    "HD", "HDE", "HDI", "LD", "LDH",
-    "MD", "NR", "H", "L", "M", "N"
-]
+model_names = ["HD", "HDE", "HDI", "LD", "LDH", "MD", "NR", "H", "L", "M", "N"]
 selected_model = st.sidebar.selectbox("Select Dataset/Model", model_names)
 
-# Layout: Two columns
+# Layout: Two columns for main UI
 col1, col2 = st.columns(2)
 
+# ------------------------ Left Column: A–D (Slider + Input) ------------------------ #
 with col1:
-    # Define a dictionary to store values
+    st.subheader("")
+    
     sliders = {}
     inputs = {}
 
-    # Feature ranges (you can customize ranges here)
     feature_config = {
         "Bore": (0, 100),
         "Stroke": (0, 200),
@@ -32,34 +30,39 @@ with col1:
 
     for feature, (min_val, max_val) in feature_config.items():
         st.markdown(f"**{feature.upper()}**")
-        col_slider, col_input = st.columns([2, 1])
+        slider_col, input_col = st.columns([3, 1])  # Adjust width ratios here
         
-        # Create a key for synchronization
         key_slider = f"{feature}_slider"
         key_input = f"{feature}_input"
 
-        # Initialize slider
-        sliders[feature] = col_slider.slider(
-            f"{feature} slider", min_val, max_val, (min_val + max_val) // 2, key=key_slider, label_visibility="collapsed"
+        # Get initial value
+        init_val = (min_val + max_val) // 2
+
+        # Sync slider and input dynamically
+        slider_val = slider_col.slider(
+            f"{feature} slider", min_val, max_val, init_val,
+            key=key_slider, label_visibility="collapsed"
         )
-        
-        # Initialize number input linked to slider
-        inputs[feature] = col_input.number_input(
-            f"{feature} input", min_val, max_val, sliders[feature], key=key_input, label_visibility="collapsed"
+        input_val = input_col.number_input(
+            f"{feature} input", min_val, max_val, slider_val,
+            key=key_input, label_visibility="collapsed"
         )
 
-        # Sync values
-        if inputs[feature] != sliders[feature]:
-            sliders[feature] = inputs[feature]
-        else:
-            inputs[feature] = sliders[feature]
+        # Override slider with number input if changed
+        if input_val != slider_val:
+            slider_val = input_val
 
-# ------------------------ Right Column: e, f, g, h ------------------------ #
+        sliders[feature] = slider_val
+        inputs[feature] = input_val
+
+# ------------------------ Right Column: R, B, Bl, VA, VB (Yes/No) ------------------------ #
 with col2:
+    st.subheader("")
 
     yes_no_features = {}
-    for feature in ["R bearing", "B bearing", "Block", "Val A","Val B"]:
-        yes_no_features[feature] = st.selectbox(f"{feature.upper()}", ["No", "Yes"])
-
-
-
+    for feature in ["R bearing", "B bearing", "Block", "Val A", "Val B"]:
+        label_col, select_col = st.columns([1, 2])  # Adjust label vs dropdown size
+        with select_col:
+            yes_no_features[feature] = st.selectbox(
+                f"{feature.upper()}", ["No", "Yes"], key=f"{feature}_select"
+            )
