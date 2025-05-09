@@ -13,15 +13,12 @@ model_names = [
     "MD", "NR", "H", "L", "M", "N"
 ]
 selected_model = st.sidebar.selectbox("Select Dataset/Model", model_names)
-st.subheader(f"Enter input features:")
 
 # Layout: Two columns
 col1, col2 = st.columns(2)
 
 # ------------------------ Left Column: a, b, c, d ------------------------ #
 with col1:
-    st.markdown("### Numeric Features (a–d)")
-    
     # Define a dictionary to store values
     sliders = {}
     inputs = {}
@@ -60,7 +57,6 @@ with col1:
 
 # ------------------------ Right Column: e, f, g, h ------------------------ #
 with col2:
-    st.markdown("### Yes/No Features (e–h)")
 
     yes_no_features = {}
     for feature in ["e", "f", "g", "h"]:
