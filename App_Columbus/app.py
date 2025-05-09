@@ -25,10 +25,10 @@ with col1:
 
     # Feature ranges (you can customize ranges here)
     feature_config = {
-        "Bore": (0, 100),
-        "Stroke": (0, 200),
-        "RPC": (10, 500),
-        "Rod": (1, 50),
+        "Bore": (0, 20),
+        "Stroke": (0, 500),
+        "RPC": (0, 500),
+        "Rod": (0, 20),
     }
 
     for feature, (min_val, max_val) in feature_config.items():
